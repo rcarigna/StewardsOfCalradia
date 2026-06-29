@@ -1,0 +1,41 @@
+# Build output
+bin/
+obj/
+
+# IDE / editor state
+.vs/
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.code-workspace
+
+# Rider / JetBrains
+.idea/
+
+# C# build artifacts
+[Bb]uild/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+*.pdb
+*.mdb
+*.cache
+*.log
+
+# NuGet
+packages/
+*.nupkg
+project.assets.json
+
+# Bannerlord / mod tooling temp output
+*.bak
+*.tmp
+*.temp
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
