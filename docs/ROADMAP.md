@@ -10,147 +10,129 @@ Stewards of Calradia is developed alongside separate Bannerlord architecture res
 
 ---
 
-## Development Roadmap
+# Roadmap
 
-### Phase 0 - Bare Bones Foundation
+## 🌱 Milestone 0 — First Breath (Complete)
 
-**Goal:** Prove the mod can load custom code in Bannerlord.
+**Question:** Can we safely extend Bannerlord?
 
-Research Focus:
+### Player Features
 
-* Module loading
-* `MBSubModuleBase`
-* Basic build output
+- Initial proof-of-concept module
+- Campaign behavior registration
+- Basic debugging workflow
 
-Implementation:
+### Architectural Exploration
 
-* Verify DLL loading
-* Create first `MBSubModuleBase`
-* Show a simple "Hello World" signal in game
-* Establish a basic build and debugging workflow
+- Module loading
+- `MBSubModuleBase`
+- Campaign behaviors
+- Development workflow
 
----
+## 👀 Milestone 1 — Observe
 
-### Phase 1 - Heralds
+**Question:** What information already exists that the player struggles to access?
 
-**Goal:** The world communicates with the player.
+### Player Features
 
-Potential Features:
+📣 Tournaments
+- Active tournament list
+- Settlement links
+- Map integration (future)
 
-* Tournament announcements
-* Active tournament list
-* World event notifications
-* Royal announcements
-* Feast notifications
+🐴 Horses
+- Horse encyclopedia
+- Horse categories
+- Where breeds can be purchased
+- Culture associations
 
-Research Focus:
+🏘️ Settlements
+- Better settlement lookup
+- Quick navigation
 
-* Tournament lifecycle
-* Campaign events
-* Notification systems
-* Event subscriptions
+### Architectural Exploration
 
----
+- Campaign models
+- Encyclopedia
+- Settlements
+- Items
+- HorseComponent
+- Campaign time/events
 
-### Phase 2 - Couriers
+## 📢 Milestone 2 — Inform
 
-**Goal:** The player communicates with the world.
+**Question:** How should the world communicate with the player?
 
-Potential Features:
+### Player Features
 
-* Request meetings with heroes
-* Deliver letters
-* Invitations
-* Delayed message delivery
-* Hero responses
+- Tournament notifications
+- Market notifications
+- Herald announcements
+- Favorite settlement alerts
 
-Research Focus:
+### Architectural Exploration
 
-* Hero AI
-* Parties
-* Campaign behaviors
-* Travel simulation
+- Campaign events
+- Notifications
+- Event listeners
 
----
+## 📖 Milestone 3 — Remember
 
-### Phase 3 - Institutions
+**Question:** What should the world remember over time?
 
-**Goal:** Introduce persistent organizations.
+### Player Features
 
-Potential Features:
+🐴 Horse Registry
+- Named horses
+- Ownership history
+- Known locations
+- First acquired
 
-* Herald's Office
-* Courier Service
-* Steward's Office
-* Guilds
-* Royal Archives
+🏰 Records
+- Visited settlements
+- Tournament history
+- Personal discoveries
 
-Research Focus:
+### Architectural Exploration
 
-* Persistent campaign entities
-* Institution ownership
-* Save/load integration
+- Save data
+- Persistent entities
+- Serialization
 
----
+## 🏛️ Milestone 4 — Institutions
 
-### Phase 4 - Registries
+**Question:** What organizations make Calradia feel alive?
 
-**Goal:** The world remembers.
+### Player Features
 
-Potential Features:
+- Herald's Office
+- Courier Service
+- Registry Office
+- Steward's Office
 
-* Horse registry
-* Named horses
-* Ownership history
-* Stud books
-* Animal records
+### Architectural Exploration
 
-Research Focus:
+- Persistent world systems
+- Campaign behaviors
+- AI interactions
 
-* Persistent data
-* Entity identity
-* Encyclopedia integration
+## 🐎 Milestone 5 — Living Horses
 
----
+**Question:** What happens when horses stop being items?
 
-### Phase 5 - Sunmark
+### Player Features
 
-**Goal:** Expand horses from equipment into living entities.
+- Horse sex
+- Age
+- Temperament
+- Bloodlines
+- Breeding
+- Training
+- Sunmark Riding Academy
 
-Potential Features:
+### Architectural Exploration
 
-* Breeding
-* Bloodlines
-* Genetics
-* Temperament
-* Training
-* Riding Academy
-* Elite warhorse program
-
-Research Focus:
-
-* New entity systems
-* Simulation
-* AI
-* Economy integration
-
----
-
-### Phase 6 - Stewardship
-
-**Goal:** Expand administrative gameplay.
-
-Potential Features:
-
-* Estate management
-* Stable masters
-* Quartermasters
-* Royal appointments
-* Administrative improvements
-
-Research Focus:
-
-* Kingdom management
-* Clan systems
-* Economy
-* Governance
+- New entity systems
+- Simulation
+- AI
+- Economy integration
