@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>10.0</LangVersion>
     <Nullable>disable</Nullable>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <PlatformTarget>x64</PlatformTarget>
@@ -27,9 +27,10 @@
     <Reference Include="TaleWorlds.CampaignSystem">
       <HintPath>$(BannerlordBinPath)\TaleWorlds.CampaignSystem.dll</HintPath>
       <Private>false</Private>
-    </Reference><Reference Include="TaleWorlds.Localization">
-  <HintPath>$(BannerlordBinPath)\TaleWorlds.Localization.dll</HintPath>
-  <Private>false</Private>
-</Reference>
+    </Reference>
+    <Reference Include="TaleWorlds.Localization">
+      <HintPath>$(BannerlordBinPath)\TaleWorlds.Localization.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
   </ItemGroup>
 </Project>
