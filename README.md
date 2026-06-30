@@ -44,3 +44,13 @@ Where appropriate, static records and items should become persistent systems: ho
 The project is currently in Phase 0: foundations. The immediate goal is to establish module loading, DLL loading, a first `MBSubModuleBase`, and a reliable debugging workflow.
 
 For the full phased plan, see [docs/ROADMAP.md](docs/ROADMAP.md).
+
+## Local Development
+
+Build and manifest checks are documented in [docs/DEBUGGING.md](docs/DEBUGGING.md). The shortest local build path is:
+
+```powershell
+.\scripts\build.ps1
+```
+
+For contribution expectations, see [CONTRIBUTING.md](CONTRIBUTING.md).
