@@ -39,3 +39,8 @@ project.assets.json
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Code Extraction Tools & artifacts
+tools
+docs/taleworlds-api
+docs/taleworlds-api.zip
