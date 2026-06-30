@@ -10,47 +10,50 @@ Stewards of Calradia is developed alongside separate Bannerlord architecture res
 
 ---
 
-# Roadmap
+## Roadmap
 
-## 🌱 Milestone 0 — First Breath (Complete)
+### 🌱 Milestone 0 — First Breath (Complete)
 
 **Question:** Can we safely extend Bannerlord?
 
-### Player Features
+#### M0 - Player Features
 
 - Initial proof-of-concept module
 - Campaign behavior registration
 - Basic debugging workflow
 
-### Architectural Exploration
+#### Technical Foundation
 
 - Module loading
 - `MBSubModuleBase`
 - Campaign behaviors
 - Development workflow
 
-## 👀 Milestone 1 — Observe
+### 👀 Milestone 1 — Observe
 
 **Question:** What information already exists that the player struggles to access?
 
-### Player Features
+#### M1 - Player Features
 
 📣 Tournaments
+
 - Active tournament list
 - Settlement links
 - Map integration (future)
 
 🐴 Horses
+
 - Horse encyclopedia
 - Horse categories
 - Where breeds can be purchased
 - Culture associations
 
 🏘️ Settlements
+
 - Better settlement lookup
 - Quick navigation
 
-### Architectural Exploration
+#### Data Models & Systems
 
 - Campaign models
 - Encyclopedia
@@ -59,68 +62,70 @@ Stewards of Calradia is developed alongside separate Bannerlord architecture res
 - HorseComponent
 - Campaign time/events
 
-## 📢 Milestone 2 — Inform
+### 📢 Milestone 2 — Inform
 
 **Question:** How should the world communicate with the player?
 
-### Player Features
+#### M2 - Player Features
 
 - Tournament notifications
 - Market notifications
 - Herald announcements
 - Favorite settlement alerts
 
-### Architectural Exploration
+#### Notification System
 
 - Campaign events
 - Notifications
 - Event listeners
 
-## 📖 Milestone 3 — Remember
+### 📖 Milestone 3 — Remember
 
 **Question:** What should the world remember over time?
 
-### Player Features
+#### M3 - Player Features
 
 🐴 Horse Registry
+
 - Named horses
 - Ownership history
 - Known locations
 - First acquired
 
 🏰 Records
+
 - Visited settlements
 - Tournament history
 - Personal discoveries
 
-### Architectural Exploration
+#### Persistence Layer
 
 - Save data
 - Persistent entities
 - Serialization
 
-## 🏛️ Milestone 4 — Institutions
+### 🏛️ Milestone 4 — Institutions
 
 **Question:** What organizations make Calradia feel alive?
 
-### Player Features
+#### M4 - Player Features
 
 - Herald's Office
 - Courier Service
 - Registry Office
 - Steward's Office
 
-### Architectural Exploration
+#### World Systems
 
 - Persistent world systems
 - Campaign behaviors
 - AI interactions
 
-## 🐎 Milestone 5 — Living Horses
+### 🐎 Milestone 5 — Horse Husbandry
 
 **Question:** What happens when horses stop being items?
 
-### Player Features
+#### M5 - Player Features
 
 - Horse sex
 - Age
@@ -130,7 +135,7 @@ Stewards of Calradia is developed alongside separate Bannerlord architecture res
 - Training
 - Sunmark Riding Academy
 
-### Architectural Exploration
+#### Simulation Framework
 
 - New entity systems
 - Simulation
