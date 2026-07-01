@@ -15,27 +15,7 @@ public sealed class SubModule : MBSubModuleBase
 
     if (gameStarterObject is CampaignGameStarter campaignGameStarter)
     {
-      campaignGameStarter.AddBehavior(new StewardsDebugBehavior());
       campaignGameStarter.AddBehavior(new NoticeBoardCampaignBehavior());
     }
-  }
-}
-
-public sealed class StewardsDebugBehavior : CampaignBehaviorBase
-{
-  public override void RegisterEvents()
-  {
-    CampaignEvents.OnSessionLaunchedEvent.AddNonSerializedListener(this, OnSessionLaunched);
-  }
-
-  public override void SyncData(IDataStore dataStore) { }
-
-  private void OnSessionLaunched(CampaignGameStarter campaignGameStarter)
-  {
-    Debug.Print("Stewards of Calradia session launched.");
-
-    InformationManager.DisplayMessage(
-      new InformationMessage("Stewards of Calradia session launched.")
-    );
   }
 }

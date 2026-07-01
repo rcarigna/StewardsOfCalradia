@@ -22,7 +22,7 @@ public sealed class NoticeBoardCampaignBehavior : CampaignBehaviorBase
     new NoticeBoardGameMenu(this).RegisterMenus(starter);
   }
 
-  private GameMenu GetSettlementMenu(CampaignGameStarter starter, string settlementId)
+  private static GameMenu GetSettlementMenu(CampaignGameStarter starter, string settlementId)
   {
     string[] settlementTypes = { "town", "village", "castle" };
 
