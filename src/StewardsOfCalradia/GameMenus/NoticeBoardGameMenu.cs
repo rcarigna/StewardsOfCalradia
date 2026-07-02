@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.GameMenus;
-using TaleWorlds.CampaignSystem.Settlements;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
 
@@ -11,6 +10,8 @@ namespace StewardsOfCalradia.GameMenus
   public sealed class NoticeBoardGameMenu
   {
     private readonly NoticeBoardCampaignBehavior _noticeBoardBehavior;
+    private readonly object _activeTournamentOptionMarker = new object();
+    private CampaignGameStarter _gameStarter;
 
     public NoticeBoardGameMenu(NoticeBoardCampaignBehavior noticeBoardBehavior)
     {
@@ -19,13 +20,14 @@ namespace StewardsOfCalradia.GameMenus
 
     public void RegisterMenus(CampaignGameStarter gameStarter)
     {
+      _gameStarter = gameStarter;
       AddNoticeBoardMenu(gameStarter);
     }
 
     private void AddNoticeBoardMenu(CampaignGameStarter gameStarter)
     {
       gameStarter.AddGameMenu(
-        "notice_board",
+        NoticeBoardMenuIds.NoticeBoard,
         "Notice Board",
         null,
         GameMenu.MenuOverlayType.SettlementWithBoth,
@@ -33,8 +35,8 @@ namespace StewardsOfCalradia.GameMenus
         null
       );
       gameStarter.AddGameMenuOption(
-        "notice_board",
-        "notice_board_tournaments",
+        NoticeBoardMenuIds.NoticeBoard,
+        NoticeBoardOptionIds.Tournaments,
         "View active tournaments",
         new GameMenuOption.OnConditionDelegate(ActiveTournamentsCondition),
         new GameMenuOption.OnConsequenceDelegate(ActiveTournamentsConsequence),
@@ -44,8 +46,8 @@ namespace StewardsOfCalradia.GameMenus
         null
       );
       gameStarter.AddGameMenuOption(
-        "notice_board",
-        "notice_board_back",
+        NoticeBoardMenuIds.NoticeBoard,
+        NoticeBoardOptionIds.NoticeBoardBack,
         "Return to town",
         new GameMenuOption.OnConditionDelegate(NoticeBoardBackCondition),
         new GameMenuOption.OnConsequenceDelegate(NoticeBoardBackConsequence),
@@ -55,16 +57,16 @@ namespace StewardsOfCalradia.GameMenus
         null
       );
       gameStarter.AddGameMenu(
-        "notice_board_tournaments",
-        "{SOC_ACTIVE_TOURNAMENTS_TEXT}",
+        NoticeBoardMenuIds.Tournaments,
+        "{" + NoticeBoardTextVariables.ActiveTournaments + "}",
         new OnInitDelegate(ActiveTournamentsInitialization),
         GameMenu.MenuOverlayType.SettlementWithBoth,
         GameMenu.MenuFlags.None,
         null
       );
       gameStarter.AddGameMenuOption(
-        "notice_board_tournaments",
-        "notice_board_tournaments_back",
+        NoticeBoardMenuIds.Tournaments,
+        NoticeBoardOptionIds.TournamentsBack,
         "Return to notice board",
         new GameMenuOption.OnConditionDelegate(NoticeBoardBackCondition),
         new GameMenuOption.OnConsequenceDelegate(ActiveTournamentsBackConsequence),
@@ -80,8 +82,8 @@ namespace StewardsOfCalradia.GameMenus
       int insertIndex = GetTownNoticeBoardInsertIndex(townMenu);
 
       gameStarter.AddGameMenuOption(
-        "town",
-        "notice_board",
+        NoticeBoardMenuIds.Town,
+        NoticeBoardOptionIds.NoticeBoard,
         "Visit the notice board",
         new GameMenuOption.OnConditionDelegate(NoticeBoardCondition),
         new GameMenuOption.OnConsequenceDelegate(NoticeBoardConsequence),
@@ -96,30 +98,74 @@ namespace StewardsOfCalradia.GameMenus
     {
       var options = townMenu.MenuOptions.ToList();
       int leaveIndex = options.FindIndex(option =>
-        option.IsLeave || option.IdString == "town_leave"
+        option.IsLeave || option.IdString == NoticeBoardMenuIds.TownLeave
       );
 
       return leaveIndex >= 0 ? leaveIndex : -1;
     }
 
-    private bool NoticeBoardInitialization(MenuCallbackArgs args)
-    {
-      Debug.Print("Initializing Notice Board menu.");
-      ActiveTournamentsInitialization(args);
-      return true;
-    }
-
     private void ActiveTournamentsInitialization(MenuCallbackArgs args)
     {
-      IReadOnlyList<Town> towns = _noticeBoardBehavior.GetTownsWithActiveTournaments();
+      IReadOnlyList<NoticeBoardNotice> notices =
+        TournamentNoticeProvider.GetActiveTournamentNotices();
+      RefreshNoticeOptions(notices);
 
       string text =
-        towns.Count == 0
+        notices.Count == 0
           ? "No active tournaments are posted right now."
-          : "Active tournaments are posted in: "
-            + string.Join(", ", towns.Select(town => town.Name.ToString()));
+          : "Tournament notices have been posted from the following towns.";
 
-      MBTextManager.SetTextVariable("SOC_ACTIVE_TOURNAMENTS_TEXT", text);
+      MBTextManager.SetTextVariable(NoticeBoardTextVariables.ActiveTournaments, text);
+    }
+
+    private void RefreshNoticeOptions(IReadOnlyList<NoticeBoardNotice> notices)
+    {
+      Campaign.Current.GameMenuManager.RemoveRelatedGameMenuOptions(_activeTournamentOptionMarker);
+
+      if (_gameStarter == null)
+      {
+        return;
+      }
+
+      GameMenu tournamentMenu = _gameStarter.GetPresumedGameMenu(NoticeBoardMenuIds.Tournaments);
+      int insertIndex = GetLeaveOptionIndex(tournamentMenu);
+
+      foreach (NoticeBoardNotice notice in notices)
+      {
+        _gameStarter.AddGameMenuOption(
+          NoticeBoardMenuIds.Tournaments,
+          notice.Id,
+          notice.Title,
+          args =>
+          {
+            args.optionLeaveType = GameMenuOption.LeaveType.Continue;
+            return true;
+          },
+          args => notice.Select(args),
+          false,
+          insertIndex,
+          false,
+          _activeTournamentOptionMarker
+        );
+
+        if (insertIndex >= 0)
+        {
+          insertIndex++;
+        }
+      }
+    }
+
+    private static int GetLeaveOptionIndex(GameMenu menu)
+    {
+      if (menu == null)
+      {
+        return -1;
+      }
+
+      List<GameMenuOption> options = menu.MenuOptions.ToList();
+      int leaveIndex = options.FindIndex(option => option.IsLeave);
+
+      return leaveIndex >= 0 ? leaveIndex : -1;
     }
 
     private bool NoticeBoardCondition(MenuCallbackArgs args)
@@ -132,7 +178,7 @@ namespace StewardsOfCalradia.GameMenus
     private void NoticeBoardConsequence(MenuCallbackArgs args)
     {
       Debug.Print("Switching to Notice Board menu.");
-      GameMenu.SwitchToMenu("notice_board");
+      GameMenu.SwitchToMenu(NoticeBoardMenuIds.NoticeBoard);
     }
 
     private bool NoticeBoardBackCondition(MenuCallbackArgs args)
@@ -145,7 +191,7 @@ namespace StewardsOfCalradia.GameMenus
     private void NoticeBoardBackConsequence(MenuCallbackArgs args)
     {
       Debug.Print("Returning to town menu.");
-      GameMenu.SwitchToMenu("town");
+      GameMenu.SwitchToMenu(NoticeBoardMenuIds.Town);
     }
 
     private bool ActiveTournamentsCondition(MenuCallbackArgs args)
@@ -156,17 +202,12 @@ namespace StewardsOfCalradia.GameMenus
 
     private void ActiveTournamentsConsequence(MenuCallbackArgs args)
     {
-      GameMenu.SwitchToMenu("notice_board_tournaments");
+      GameMenu.SwitchToMenu(NoticeBoardMenuIds.Tournaments);
     }
 
     private void ActiveTournamentsBackConsequence(MenuCallbackArgs args)
     {
-      GameMenu.SwitchToMenu("notice_board");
-    }
-
-    public IReadOnlyList<Town> GetActiveTournamentTowns()
-    {
-      return _noticeBoardBehavior.GetTownsWithActiveTournaments();
+      GameMenu.SwitchToMenu(NoticeBoardMenuIds.NoticeBoard);
     }
   }
 }

@@ -1,9 +1,6 @@
-using System.Collections.Generic;
 using StewardsOfCalradia.GameMenus;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.GameMenus;
-using TaleWorlds.CampaignSystem.Settlements;
-using TaleWorlds.CampaignSystem.TournamentGames;
 using TaleWorlds.Library;
 
 namespace StewardsOfCalradia;
@@ -11,6 +8,7 @@ namespace StewardsOfCalradia;
 public sealed class NoticeBoardCampaignBehavior : CampaignBehaviorBase
 {
   private CampaignGameStarter _campaignGameStarter;
+  private NoticeBoardGameMenu _noticeBoardGameMenu;
 
   public override void RegisterEvents()
   {
@@ -22,44 +20,20 @@ public sealed class NoticeBoardCampaignBehavior : CampaignBehaviorBase
   {
     Debug.Print("Adding game menus for Notice Board.");
     _campaignGameStarter = starter;
-    new NoticeBoardGameMenu(this).RegisterMenus(starter);
+    _noticeBoardGameMenu = new NoticeBoardGameMenu(this);
+    _noticeBoardGameMenu.RegisterMenus(starter);
   }
 
-  private static GameMenu GetSettlementMenu(CampaignGameStarter starter, string settlementId)
+  private static GameMenu GetTownMenu(CampaignGameStarter starter)
   {
-    string[] settlementTypes = { "town", "village", "castle" };
+    GameMenu townMenu = starter.GetPresumedGameMenu(NoticeBoardMenuIds.Town);
 
-    foreach (string settlementType in settlementTypes)
+    if (townMenu == null)
     {
-      GameMenu settlementMenu = starter.GetPresumedGameMenu(settlementType);
-
-      if (settlementMenu != null)
-      {
-        return settlementMenu;
-      }
+      Debug.Print("Town menu not found.");
     }
 
-    Debug.Print($"Settlement menu '{settlementId}' not found.");
-    return null;
-  }
-
-  public IReadOnlyList<Town> GetTownsWithActiveTournaments()
-  {
-    List<Town> townsWithTournaments = new List<Town>();
-
-    foreach (Town town in Town.AllTowns)
-    {
-      TournamentGame tournament = Campaign.Current.TournamentManager.GetTournamentGame(town);
-
-      if (tournament == null)
-      {
-        continue;
-      }
-
-      townsWithTournaments.Add(town);
-    }
-
-    return townsWithTournaments;
+    return townMenu;
   }
 
   private void BeforeGameMenuOpened(MenuCallbackArgs args)
@@ -69,7 +43,7 @@ public sealed class NoticeBoardCampaignBehavior : CampaignBehaviorBase
       return;
     }
 
-    GameMenu townMenu = GetSettlementMenu(_campaignGameStarter, "town");
+    GameMenu townMenu = GetTownMenu(_campaignGameStarter);
 
     if (!ReferenceEquals(args.MenuContext.GameMenu, townMenu))
     {
@@ -78,7 +52,7 @@ public sealed class NoticeBoardCampaignBehavior : CampaignBehaviorBase
 
     Debug.Print("Positioning Notice Board town menu option.");
     Campaign.Current.GameMenuManager.RemoveRelatedGameMenuOptions(this);
-    new NoticeBoardGameMenu(this).EnsureTownOption(_campaignGameStarter, townMenu);
+    _noticeBoardGameMenu.EnsureTownOption(_campaignGameStarter, townMenu);
   }
 
   public override void SyncData(IDataStore dataStore) { }
