@@ -46,6 +46,8 @@ dotnet build .\src\StewardsOfCalradia\StewardsOfCalradia.csproj
 
 After building, launch Bannerlord with the `StewardsOfCalradia` module enabled and verify the behavior in game. Additional debugging notes live in [docs/DEBUGGING.md](docs/DEBUGGING.md).
 
+Quality gates and manual smoke checks live in [docs/QA.md](docs/QA.md). Code changes should pass the build with `0 Warning(s), 0 Error(s)` before review.
+
 ## Contribution Guidelines
 
 - Keep changes small and tied to one purpose.
@@ -55,6 +57,7 @@ After building, launch Bannerlord with the `StewardsOfCalradia` module enabled a
 - Update documentation when behavior, setup, or project direction changes.
 - Avoid adding new dependencies unless they are clearly necessary for the mod.
 - Follow the formatting defaults in [.editorconfig](.editorconfig).
+- Treat analyzer warnings as build failures unless there is a specific project reason to suppress one.
 
 ## Pull Requests
 

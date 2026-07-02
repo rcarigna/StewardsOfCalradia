@@ -8,6 +8,7 @@
     <Prefer32Bit>false</Prefer32Bit>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
     <NoWarn>$(NoWarn);CA1016</NoWarn>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
