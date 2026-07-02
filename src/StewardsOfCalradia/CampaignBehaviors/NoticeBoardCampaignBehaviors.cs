@@ -1,0 +1,59 @@
+using StewardsOfCalradia.GameMenus;
+using TaleWorlds.CampaignSystem;
+using TaleWorlds.CampaignSystem.GameMenus;
+using TaleWorlds.Library;
+
+namespace StewardsOfCalradia;
+
+public sealed class NoticeBoardCampaignBehavior : CampaignBehaviorBase
+{
+  private CampaignGameStarter _campaignGameStarter;
+  private NoticeBoardGameMenu _noticeBoardGameMenu;
+
+  public override void RegisterEvents()
+  {
+    CampaignEvents.OnSessionLaunchedEvent.AddNonSerializedListener(this, AddGameMenus);
+    CampaignEvents.BeforeGameMenuOpenedEvent.AddNonSerializedListener(this, BeforeGameMenuOpened);
+  }
+
+  private void AddGameMenus(CampaignGameStarter starter)
+  {
+    Debug.Print("Adding game menus for Notice Board.");
+    _campaignGameStarter = starter;
+    _noticeBoardGameMenu = new NoticeBoardGameMenu(this);
+    _noticeBoardGameMenu.RegisterMenus(starter);
+  }
+
+  private static GameMenu GetTownMenu(CampaignGameStarter starter)
+  {
+    GameMenu townMenu = starter.GetPresumedGameMenu(NoticeBoardMenuIds.Town);
+
+    if (townMenu == null)
+    {
+      Debug.Print("Town menu not found.");
+    }
+
+    return townMenu;
+  }
+
+  private void BeforeGameMenuOpened(MenuCallbackArgs args)
+  {
+    if (_campaignGameStarter == null || args.MenuContext?.GameMenu == null)
+    {
+      return;
+    }
+
+    GameMenu townMenu = GetTownMenu(_campaignGameStarter);
+
+    if (!ReferenceEquals(args.MenuContext.GameMenu, townMenu))
+    {
+      return;
+    }
+
+    Debug.Print("Positioning Notice Board town menu option.");
+    Campaign.Current.GameMenuManager.RemoveRelatedGameMenuOptions(this);
+    _noticeBoardGameMenu.EnsureTownOption(_campaignGameStarter, townMenu);
+  }
+
+  public override void SyncData(IDataStore dataStore) { }
+}

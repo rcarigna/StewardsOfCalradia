@@ -22,6 +22,13 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\build.ps1
 
 The script validates `SubModule.xml`, checks that the expected TaleWorlds assemblies are available in the local Bannerlord install, and builds `src/StewardsOfCalradia/StewardsOfCalradia.csproj`.
 
+Analyzer warnings are treated as build failures. A successful quality-gate build should report:
+
+```text
+0 Warning(s)
+0 Error(s)
+```
+
 Build output is written to:
 
 ```text
@@ -64,3 +71,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\validate-manifest.
 ```
 
 This checks the module id, DLL name, submodule class, and required Bannerlord dependencies.
+
+## Quality Checklist
+
+The current manual smoke-test checklist lives in [QA.md](QA.md).
