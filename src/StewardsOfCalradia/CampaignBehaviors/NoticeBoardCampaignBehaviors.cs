@@ -1,6 +1,9 @@
+using System.Collections.Generic;
 using StewardsOfCalradia.GameMenus;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.GameMenus;
+using TaleWorlds.CampaignSystem.Settlements;
+using TaleWorlds.CampaignSystem.TournamentGames;
 using TaleWorlds.Library;
 
 namespace StewardsOfCalradia;
@@ -38,6 +41,25 @@ public sealed class NoticeBoardCampaignBehavior : CampaignBehaviorBase
 
     Debug.Print($"Settlement menu '{settlementId}' not found.");
     return null;
+  }
+
+  public IReadOnlyList<Town> GetTownsWithActiveTournaments()
+  {
+    List<Town> townsWithTournaments = new List<Town>();
+
+    foreach (Town town in Town.AllTowns)
+    {
+      TournamentGame tournament = Campaign.Current.TournamentManager.GetTournamentGame(town);
+
+      if (tournament == null)
+      {
+        continue;
+      }
+
+      townsWithTournaments.Add(town);
+    }
+
+    return townsWithTournaments;
   }
 
   private void BeforeGameMenuOpened(MenuCallbackArgs args)
